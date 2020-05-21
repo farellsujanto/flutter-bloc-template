@@ -21,7 +21,9 @@ class FirebaseAuthRepository {
 
   Future<void> signInWithCredentials(String email, String password) {
     return _firebaseAuth.signInWithEmailAndPassword(
-        email: email, password: password);
+      email: email,
+      password: password,
+    );
   }
 
   Future<void> signUp({String email, String password}) async {
@@ -29,6 +31,10 @@ class FirebaseAuthRepository {
       email: email,
       password: password,
     );
+  }
+
+  Stream<FirebaseUser> authStateListener() {
+    return FirebaseAuth.instance.onAuthStateChanged;
   }
 
   Future<void> signOut() async {

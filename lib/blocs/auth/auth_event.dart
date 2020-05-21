@@ -11,4 +11,6 @@ class AuthInitialize extends AuthEvent {}
 
 class AuthLogin extends AuthEvent {}
 
+class AuthInitializeBlank extends AuthEvent {}
+
 class AuthSignOut extends AuthEvent {}

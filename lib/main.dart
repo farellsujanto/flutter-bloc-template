@@ -11,22 +11,26 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   BlocSupervisor.delegate = SimpleBlocDelegate();
 
-  final FirebaseAuthRepository firebaseAuthRepository =
-      FirebaseAuthRepository();
-
   runApp(
-    MultiBlocProvider(
+    MultiRepositoryProvider(
       providers: [
-        BlocProvider<TodosBloc>(
-          create: (context) => TodosBloc()..add(TodosLoaded()),
-        ),
-        BlocProvider<AuthBloc>(
-          create: (context) => AuthBloc(
-            firebaseAuthRepository: firebaseAuthRepository,
-          )..add(AuthInitialize()),
+        RepositoryProvider<FirebaseAuthRepository>(
+          create: (context) => FirebaseAuthRepository(),
         ),
       ],
-      child: App(),
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider<TodosBloc>(
+            create: (context) => TodosBloc()..add(TodosLoaded()),
+          ),
+          BlocProvider<AuthBloc>(
+            create: (context) => AuthBloc(
+              firebaseAuthRepository: RepositoryProvider.of<FirebaseAuthRepository>(context),
+            )..add(AuthInitialize()),
+          ),
+        ],
+        child: App(),
+      ),
     ),
   );
 }
