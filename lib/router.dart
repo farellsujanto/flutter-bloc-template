@@ -14,8 +14,10 @@ class Router {
         return MaterialPageRoute(builder: (_) => TodosScreen());
       case '/auth':
         return MaterialPageRoute(builder: (_) => LoginScreen());
+      case '/auth/register':
+        return MaterialPageRoute(builder: (_) => RegisterScreen());
       default:
-        return MaterialPageRoute(builder: (_) => Container());
+        return MaterialPageRoute(builder: (_) => Container(child: Center(child: Text("Route Error"),),));
     }
   }
 }

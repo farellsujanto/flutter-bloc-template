@@ -43,7 +43,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     }
     if (event is LoginButtonPressed) {
       yield* _mapLoginButtonPressedToState(
-          email: event.email, password: event.password);
+        email: event.email,
+        password: event.password,
+      );
     }
     if (event is LoginWithGoogleButtonPressed) {}
   }

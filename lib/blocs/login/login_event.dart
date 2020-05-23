@@ -32,6 +32,18 @@ class PasswordChanged extends LoginEvent {
   String toString() => 'PasswordChanged { password: $password }';
 }
 
+class RePasswordChanged extends LoginEvent {
+  final String password;
+
+  const RePasswordChanged({@required this.password});
+
+  @override
+  List<Object> get props => [password];
+
+  @override
+  String toString() => 'PasswordChanged { password: $password }';
+}
+
 class LoginButtonPressed extends LoginEvent {
   final String email;
   final String password;

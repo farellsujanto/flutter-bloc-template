@@ -1,29 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:todos_normal_test/blocs/login/login.dart';
+import 'package:todos_normal_test/blocs/register/register_bloc.dart';
 
-class LoginBody extends StatefulWidget {
+class RegisterBody extends StatefulWidget {
   @override
-  _LoginBodyState createState() => _LoginBodyState();
+  _RegisterBodyState createState() => _RegisterBodyState();
 }
 
-class _LoginBodyState extends State<LoginBody> {
+class _RegisterBodyState extends State<RegisterBody> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  LoginBloc _loginBloc;
+  RegisterBloc _registerBloc;
 
   @override
   void initState() {
     super.initState();
-    _loginBloc = BlocProvider.of<LoginBloc>(context);
+    _registerBloc = BlocProvider.of<RegisterBloc>(context);
     _emailController.addListener(_onEmailChanged);
     _passwordController.addListener(_onPasswordChanged);
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<LoginBloc, LoginState>(
+    return BlocListener<RegisterBloc, RegisterState>(
       listener: (context, state) {
         if (state.isFailure) {
           Scaffold.of(context)
@@ -65,7 +65,7 @@ class _LoginBodyState extends State<LoginBody> {
             );
         }
       },
-      child: BlocBuilder<LoginBloc, LoginState>(
+      child: BlocBuilder<RegisterBloc, RegisterState>(
         builder: (context, state) {
           return Padding(
             padding: EdgeInsets.all(20.0),
@@ -104,14 +104,14 @@ class _LoginBodyState extends State<LoginBody> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: <Widget>[
                         RaisedButton(
-                          child: Text("Login"),
+                          child: Text("Register"),
                           onPressed: isLoginButtonEnabled(state)
                               ? _onFormSubmitted
                               : null,
                         ),
                         RaisedButton(
-                          child: Text("Register"),
-                          onPressed: () => Navigator.of(context).pushNamed('/auth/register')
+                          child: Text("Login"),
+                          onPressed: () => Navigator.of(context).pop(),
                         ),
                         // LoginButton(
                         //   onPressed: isLoginButtonEnabled(state)
@@ -142,7 +142,7 @@ class _LoginBodyState extends State<LoginBody> {
   bool get isPopulated =>
       _emailController.text.isNotEmpty && _passwordController.text.isNotEmpty;
 
-  bool isLoginButtonEnabled(LoginState state) {
+  bool isLoginButtonEnabled(RegisterState state) {
     return state.isEmailValid &&
         !state.isSubmitting &&
         state.isPasswordValid &&
@@ -150,16 +150,16 @@ class _LoginBodyState extends State<LoginBody> {
   }
 
   void _onEmailChanged() {
-    _loginBloc.add(EmailChanged(email: _emailController.text));
+    _registerBloc.add(EmailChanged(email: _emailController.text));
   }
 
   void _onPasswordChanged() {
-    _loginBloc.add(PasswordChanged(password: _passwordController.text));
+    _registerBloc.add(PasswordChanged(password: _passwordController.text));
   }
 
   void _onFormSubmitted() {
-    _loginBloc.add(
-      LoginButtonPressed(
+    _registerBloc.add(
+      RegisterButtonPressed(
         email: _emailController.text,
         password: _passwordController.text,
       ),
